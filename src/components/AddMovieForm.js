@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { addMovie } from './../actions/movieActions';
+import { addMovie } from '../actions/movieActions';
 import { connect } from 'react-redux';
 
 import { Link, useHistory } from 'react-router-dom';
 
 const AddMovieForm = (props) => {
     const { push } = useHistory();
-
+    const {addMovie} = props
     const [movie, setMovie] = useState({
         title: "",
         director: "",
@@ -22,7 +22,21 @@ const AddMovieForm = (props) => {
         });
     }
 
+
     const handleSubmit = (e) => {
+        console.log('handle sub ran')
+        e.preventDefault();
+        const newMovie = {
+            title: movie.title,
+            director: movie.director,
+            genre: movie.genre,
+            metascore: movie.metascore,
+            description: movie.description,
+            id: Date.now()
+        }
+        console.log(newMovie.id)
+        addMovie(newMovie);
+        push('/movies');
     }
 
     const { title, director, genre, metascore, description } = movie;
@@ -58,7 +72,7 @@ const AddMovieForm = (props) => {
                         			
                     </div>
                     <div className="modal-footer">
-                        <input type="submit" className="btn btn-success" value="Add"/>
+                        <input type="submit" className="btn btn-success" value="Add" onClick={handleSubmit}/>
                         <Link to={`/movies`}><input type="button" className="btn btn-default" value="Cancel"/></Link>
                     </div>
                 </form>
@@ -66,5 +80,10 @@ const AddMovieForm = (props) => {
         </div>
     </div>);
 }
+const mapStateToProps = state =>{
+    return {
+        movies: state.moves
+    }
+}
 
-export default AddMovieForm;
+export default connect(mapStateToProps, {addMovie})(AddMovieForm);
