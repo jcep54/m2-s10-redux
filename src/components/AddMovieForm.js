@@ -24,17 +24,11 @@ const AddMovieForm = (props) => {
 
 
     const handleSubmit = (e) => {
-        console.log('handle sub ran')
         e.preventDefault();
         const newMovie = {
-            title: movie.title,
-            director: movie.director,
-            genre: movie.genre,
-            metascore: movie.metascore,
-            description: movie.description,
+            ...movie,
             id: Date.now()
         }
-        console.log(newMovie.id)
         addMovie(newMovie);
         push('/movies');
     }
